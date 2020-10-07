@@ -1,0 +1,37 @@
+<h1>Show App</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, LiveMapAppWeb.AppLive.FormComponent,
+    id: @app.id,
+    title: @page_title,
+    action: @live_action,
+    app: @app,
+    return_to: Routes.app_show_path(@socket, :show, @app) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Longitude:</strong>
+    <%= @app.longitude %>
+  </li>
+
+  <li>
+    <strong>Latitude:</strong>
+    <%= @app.latitude %>
+  </li>
+
+  <li>
+    <strong>App:</strong>
+    <%= @app.app_id %>
+  </li>
+
+  <li>
+    <strong>Download at:</strong>
+    <%= @app.download_at %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.app_show_path(@socket, :edit, @app), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.app_index_path(@socket, :index) %></span>
