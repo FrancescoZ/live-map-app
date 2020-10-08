@@ -6,7 +6,7 @@ defmodule LiveMapApp.DashboardTest do
   describe "apps" do
     alias LiveMapApp.Dashboard.App
 
-    @valid_attrs %{app_id: "some app_id", download_at: "2010-04-17T14:00:00Z", latitude: "120.5", longitude: "120.5"}
+    @valid_attrs %{app_id: "some app_id", download_at: "2010-04-17T14:00:00Z", latitude: "120.5", longitude: "120.5", country: "Unknown"}
     @update_attrs %{app_id: "some updated app_id", download_at: "2011-05-18T15:01:01Z", latitude: "456.7", longitude: "456.7"}
     @invalid_attrs %{app_id: nil, download_at: nil, latitude: nil, longitude: nil}
 
@@ -39,21 +39,6 @@ defmodule LiveMapApp.DashboardTest do
 
     test "create_app/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Dashboard.create_app(@invalid_attrs)
-    end
-
-    test "update_app/2 with valid data updates the app" do
-      app = app_fixture()
-      assert {:ok, %App{} = app} = Dashboard.update_app(app, @update_attrs)
-      assert app.app_id == "some updated app_id"
-      assert app.download_at == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert app.latitude == Decimal.new("456.7")
-      assert app.longitude == Decimal.new("456.7")
-    end
-
-    test "update_app/2 with invalid data returns error changeset" do
-      app = app_fixture()
-      assert {:error, %Ecto.Changeset{}} = Dashboard.update_app(app, @invalid_attrs)
-      assert app == Dashboard.get_app!(app.id)
     end
 
     test "delete_app/1 deletes the app" do

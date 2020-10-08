@@ -2,6 +2,8 @@ defmodule LiveMapAppWeb.DownloadAppController do
   use LiveMapAppWeb, :controller
   alias LiveMapApp.Dashboard
 
+  @unknown "Unknown"
+
   def add_download(conn, %{
         "longitude" => long,
         "latitude" => lat,
@@ -53,13 +55,18 @@ defmodule LiveMapAppWeb.DownloadAppController do
   defp handle_tesla_response({:ok, %Tesla.Env{status: 200, body: body}}),
     do:
       body
-      |> Jason.decode!()
-      |> Map.get("results")
+      |> Jason.decode()
+      |> parse_results()
+
+  defp handle_tesla_response(_response), do: @unknown
+
+  defp parse_results({:ok, %{"results"=> nil}}), do: @unknown
+  defp parse_results({:ok, %{"results"=> result}}), do: result
       |> List.first()
       |> parse_address()
-  defp handle_tesla_response(_response), do: "Unknown"
+  defp parse_results(_), do: @unknown
 
-  defp parse_address(nil), do: "Unknown"
+  defp parse_address(nil), do: @unknown
   defp parse_address(components),
     do:
       components
@@ -71,6 +78,4 @@ defmodule LiveMapAppWeb.DownloadAppController do
           acc
         end
       end)
-
-
 end
