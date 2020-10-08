@@ -17,8 +17,27 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 
+let Hooks = {}
+
+Hooks.MapMarkerHandler = {
+  mounted() {
+
+    this.handleEvent("new_marker", ({ marker }) => {
+
+      var markerPosition = { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }
+
+      const mapMarker = new google.maps.Marker({
+        position: markerPosition,
+        animation: google.maps.Animation.DROP,
+        title: marker.app_id
+      })
+      mapMarker.setMap(window.map)
+    });
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks, params: {_csrf_token: csrfToken}})
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())

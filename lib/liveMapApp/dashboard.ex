@@ -53,6 +53,7 @@ defmodule LiveMapApp.Dashboard do
     %App{}
     |> App.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:download_added)
   end
 
   @doc """
@@ -82,5 +83,20 @@ defmodule LiveMapApp.Dashboard do
   """
   def change_app(%App{} = app, attrs \\ %{}) do
     App.changeset(app, attrs)
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(LiveMapApp.PubSub, "apps")
+  end
+
+  defp broadcast({:error, _reason}=error, _event), do: error
+  defp broadcast({:ok, app}, :download_added = event) do
+    Phoenix.PubSub.broadcast(LiveMapApp.PubSub, "apps", {event, app})
+    Phoenix.PubSub.broadcast(LiveMapApp.PubSub, "apps", {:new_marker, app})
+    {:ok, app}
+  end
+  defp broadcast({:ok, app}, event) do
+    Phoenix.PubSub.broadcast(LiveMapApp.PubSub, "apps", {event, app})
+    {:ok, app}
   end
 end

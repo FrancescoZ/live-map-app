@@ -57,9 +57,9 @@ defmodule LiveMapAppWeb.DownloadAppController do
       |> Map.get("results")
       |> List.first()
       |> parse_address()
+  defp handle_tesla_response(_response), do: "Unknown"
 
   defp parse_address(nil), do: "Unknown"
-
   defp parse_address(components),
     do:
       components
@@ -72,5 +72,5 @@ defmodule LiveMapAppWeb.DownloadAppController do
         end
       end)
 
-  defp handle_tesla_response(_response), do: "Unknown"
+
 end

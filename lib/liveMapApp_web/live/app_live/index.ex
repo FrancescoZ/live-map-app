@@ -6,6 +6,7 @@ defmodule LiveMapAppWeb.AppLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Dashboard.subscribe()
     {:ok, assign(socket, :downloaded_apps, list_apps())}
   end
 
@@ -38,6 +39,17 @@ defmodule LiveMapAppWeb.AppLive.Index do
     {:ok, _} = Dashboard.delete_app(app)
 
     {:noreply, assign(socket, :apps, list_apps())}
+  end
+
+  @impl true
+  def handle_info({:download_added, app}, socket) do
+    {:noreply, update(socket, :downloaded_apps, fn apps -> [app| apps] end)}
+  end
+
+  def handle_info({:new_marker, app}, socket) do
+    {:noreply, push_event(socket, "new_marker", %{
+      marker: %{latitude: app.latitude, longitude: app.longitude, app_id: app.app_id}
+    })}
   end
 
   defp list_apps do
