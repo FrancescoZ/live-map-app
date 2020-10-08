@@ -15,6 +15,7 @@ defmodule LiveMapAppWeb.Router do
   end
 
   scope "/", LiveMapAppWeb do
+    post "/add_downaload", DownloadAppController, :add_download
     pipe_through :browser
 
     live "/", AppLive.Index, :index

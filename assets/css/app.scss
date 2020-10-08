@@ -93,3 +93,117 @@
 #map {
   height: 400px;
 }
+
+dl {
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+  padding: 20px;
+}
+
+dt {
+  align-self: flex-start;
+  width: 100%;
+  font-weight: 700;
+  display: block;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 20px;
+  margin-left: 130px;
+}
+
+.text {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 130px;
+  background-color: white;
+  position: absolute;
+  left: 0;
+  justify-content: flex-end;
+}
+
+.percentage {
+  font-size: .8em;
+  line-height: 1;
+  text-transform: uppercase;
+  width: 100%;
+  height: 40px;
+  margin-left: 130px;
+  background: repeating-linear-gradient(
+  to right,
+  #ddd,
+  #ddd 1px,
+  #fff 1px,
+  #fff 5%
+);
+
+  &:after {
+    content: "";
+    display: block;
+    background-color: #3d9970;
+    width: 50px;
+    margin-bottom: 10px;
+    height: 90%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background-color .3s ease;
+    cursor: pointer;
+  }
+  &:hover,
+  &:focus {
+    &:after {
+       background-color: #aaa;
+    }
+  }
+}
+
+@for $i from 1 through 100 {
+  .percentage-#{$i}:after {
+    $value: ($i * 1%);
+    width: $value;
+  }
+}
+
+.pie {
+  border-radius 100%
+  height calc(var(--size, 200) * 1px)
+  overflow hidden
+  position relative
+  width calc(var(--size, 200) * 1px)
+
+  &__segment
+    --a calc(var(--over50, 0) * -100%)
+    --b calc((1 + var(--over50, 0)) * 100%)
+    --degrees calc((var(--offset, 0) / 100) * 360)
+    -webkit-clip-path polygon(var(--a) var(--a), var(--b) var(--a), var(--b) var(--b), var(--a) var(--b))
+    clip-path polygon(var(--a) var(--a), var(--b) var(--a), var(--b) var(--b), var(--a) var(--b))
+    height 100%
+    position absolute
+    transform translate(0, -50%) rotate(90deg) rotate(calc(var(--degrees) * 1deg))
+    transform-origin 50% 100%
+    width 100%
+    z-index calc(1 + var(--over50))
+
+    &:after
+    &:before
+      background var(--bg, #e74c3c)
+      content ''
+      height 100%
+      position absolute
+      width 100%
+
+    &:before
+      --degrees calc((var(--value, 45) / 100) * 360)
+      transform translate(0, 100%) rotate(calc(var(--degrees) * 1deg))
+      transform-origin 50% 0%
+
+    &:after
+      opacity var(--over50, 0)
+}

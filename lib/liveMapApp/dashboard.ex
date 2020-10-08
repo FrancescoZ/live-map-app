@@ -56,24 +56,6 @@ defmodule LiveMapApp.Dashboard do
   end
 
   @doc """
-  Updates a app.
-
-  ## Examples
-
-      iex> update_app(app, %{field: new_value})
-      {:ok, %App{}}
-
-      iex> update_app(app, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_app(%App{} = app, attrs) do
-    app
-    |> App.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a app.
 
   ## Examples
