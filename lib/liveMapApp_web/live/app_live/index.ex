@@ -6,7 +6,7 @@ defmodule LiveMapAppWeb.AppLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :apps, list_apps())}
+    {:ok, assign(socket, :downloaded_apps, list_apps())}
   end
 
   @impl true

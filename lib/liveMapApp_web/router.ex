@@ -17,7 +17,13 @@ defmodule LiveMapAppWeb.Router do
   scope "/", LiveMapAppWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", AppLive.Index, :index
+    live "/apps", AppLive.Index, :index
+    live "/apps/new", AppLive.Index, :new
+    live "/apps/:id/edit", AppLive.Index, :edit
+
+    live "/apps/:id", AppLive.Show, :show
+    live "/apps/:id/show/edit", AppLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -38,13 +44,6 @@ defmodule LiveMapAppWeb.Router do
     scope "/" do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: LiveMapAppWeb.Telemetry
-
-      live "/apps", AppLive.Index, :index
-      live "/apps/new", AppLive.Index, :new
-      live "/apps/:id/edit", AppLive.Index, :edit
-
-      live "/apps/:id", AppLive.Show, :show
-      live "/apps/:id/show/edit", AppLive.Show, :edit
 
     end
   end
