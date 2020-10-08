@@ -1,12 +1,12 @@
 defmodule LiveMapAppWeb.AppLive.Index do
   use LiveMapAppWeb, :live_view
 
-  alias LiveMapApp.Dashboard
   alias LiveMapApp.Dashboard.App
+  alias LiveMapAppWeb.AppLive.Dashboard
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: Dashboard.subscribe()
+    if connected?(socket), do: LiveMapApp.Dashboard.subscribe()
     {:ok, assign(socket, :downloaded_apps, list_apps())}
   end
 
@@ -18,7 +18,7 @@ defmodule LiveMapAppWeb.AppLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit App")
-    |> assign(:app, Dashboard.get_app!(id))
+    |> assign(:app, LiveMapApp.Dashboard.get_app!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -35,8 +35,8 @@ defmodule LiveMapAppWeb.AppLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    app = Dashboard.get_app!(id)
-    {:ok, _} = Dashboard.delete_app(app)
+    app = LiveMapApp.Dashboard.get_app!(id)
+    {:ok, _} = LiveMapApp.Dashboard.delete_app(app)
 
     {:noreply, assign(socket, :apps, list_apps())}
   end
@@ -53,6 +53,6 @@ defmodule LiveMapAppWeb.AppLive.Index do
   end
 
   defp list_apps do
-    Dashboard.list_apps()
+    LiveMapApp.Dashboard.list_apps()
   end
 end

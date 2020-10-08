@@ -14,57 +14,11 @@
   </div>
 </section>
 
-<dl>
-  <dt>Download by country</dt>
-  <%= for {countryName, count} <- Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.country, 1, &(&1 + 1)) end) do %>
-    <dd class="percentage percentage-<%= trunc((count/length(@downloaded_apps))*100) %>">
-      <span class="text">
-        <%= countryName %>: <%= Float.round((count/length(@downloaded_apps))*100,2) %>
-      </span>
-    </dd>
-  <% end %>
-</dl>
-<dl>
-  <dt>Download by Year</dt>
-  <%= for {year, count} <- Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.year, 1, &(&1 + 1)) end) do %>
-    <dd class="percentage percentage-<%= trunc((count/length(@downloaded_apps))*100) %>">
-      <span class="text">
-        <%= year %>: <%= Float.round((count/length(@downloaded_apps))*100,2) %>
-      </span>
-    </dd>
-  <% end %>
-</dl>
-<dl>
-  <dt>Download by Month</dt>
-  <%= for {month, count} <- Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.month, 1, &(&1 + 1)) end) do %>
-    <dd class="percentage percentage-<%= trunc((count/length(@downloaded_apps))*100) %>">
-      <span class="text">
-        <%= month %>: <%= Float.round((count/length(@downloaded_apps))*100,2) %>
-      </span>
-    </dd>
-  <% end %>
-</dl>
-<dl>
-  <dt>Download by day</dt>
-  <%= for {day, count} <- Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, Date.day_of_week(x.download_at), 1, &(&1 + 1)) end) do %>
-    <dd class="percentage percentage-<%= trunc((count/length(@downloaded_apps))*100) %>">
-      <span class="text">
-        <%= day %>: <%= Float.round((count/length(@downloaded_apps))*100,2) %>
-      </span>
-    </dd>
-  <% end %>
-</dl>
-<dl>
-  <dt>Download by app</dt>
-  <%= for {app_name, count} <- Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.app_id, 1, &(&1 + 1)) end) do %>
-    <dd class="percentage percentage-<%= trunc((count/length(@downloaded_apps))*100) %>">
-      <span class="text">
-        <%= app_name %>: <%= count %>
-      </span>
-    </dd>
-  <% end %>
-</dl>
-
+<%= live_component(@socket, Dashboard, id: "ByCountry", title: "Dashboard by country", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.country, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+<%= live_component(@socket, Dashboard, id: "ByYear", title: "Dashboard by Year", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.year, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+<%= live_component(@socket, Dashboard, id: "ByMonth", title: "Dashboard by Month", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.month, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+<%= live_component(@socket, Dashboard, id: "ByDay", title: "Dashboard by Day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, Date.day_of_week(x.download_at), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+<%= live_component(@socket, Dashboard, id: "ByApp", title: "Dashboard by App", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.app_id, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: false)%>
 
 <table>
   <thead>
@@ -84,12 +38,6 @@
         <td><%= app.latitude %></td>
         <td><%= app.app_id %></td>
         <td><%= app.download_at %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.app_show_path(@socket, :show, app) %></span>
-          <span><%= live_patch "Edit", to: Routes.app_index_path(@socket, :edit, app) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: app.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
       </tr>
     <% end %>
   </tbody>
