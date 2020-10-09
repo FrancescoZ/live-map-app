@@ -1,0 +1,48 @@
+# Elixir 1.10 with Erlang/OTP 22
+FROM elixir@sha256:ba981350b63eb016427d12d90dad643eea8e2bfed37e0f2e4f2bce5aa5303eae
+
+LABEL maintainer="francesco.zanoli@gmail.com"
+
+ARG run_deps="inotify-tools"
+
+ARG mix_env="dev"
+ARG http_port="4000"
+ARG app_path="/home/app/service"
+ARG uid="1000"
+
+USER root
+
+ENV TERM xterm
+
+ENV HOME /home/app
+ENV APP_PATH ${app_path}
+ENV HTTP_PORT ${http_port}
+ENV MIX_ENV ${mix_env}
+ENV ERL_AFLAGS="-kernel shell_history enabled"
+
+ENV REFRESHED_AT 2020-10-08
+
+RUN apt-get -q update && apt-get -qy --no-install-recommends install ${run_deps}
+RUN curl -sL https://deb.nodesource.com/setup_14.x
+RUN apt-get install -y nodejs npm
+
+RUN adduser --disabled-password --gecos '' app --uid ${uid}
+
+RUN mkdir -p /home/app/elixir-artifacts
+RUN chown -R app:app /home/app/elixir-artifacts
+
+USER app:app
+
+RUN /usr/local/bin/mix local.hex --force && \
+  /usr/local/bin/mix local.rebar --force && \
+  /usr/local/bin/mix hex.info
+
+RUN echo "PS1=\"\[$(tput setaf 3)$(tput bold)[\]\\u@\\h$:\\w]$ \"" >> /home/app/.bashrc
+
+COPY --chown=app:app . ${APP_PATH}
+
+WORKDIR ${APP_PATH}
+
+EXPOSE ${HTTP_PORT}
+
+CMD ["sh", "script/start.sh"]

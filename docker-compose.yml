@@ -1,0 +1,45 @@
+version: '2.2'
+services:
+  live-map-app:
+    environment:
+      - UID
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+      args:
+        hex_repo_key: ${HEX_REPO_KEY}
+        uid: ${UID}
+    # Comment the following line if you want `docker-compose up` to start the phoenix server automatically
+    command: bash scripts/dev.sh
+    env_file: ./env/dev.env
+    ports:
+      - 4005:4000
+    volumes:
+      - .:/home/app/service/
+      - elixir-artifacts:/home/app/elixir-artifacts
+    depends_on:
+      live-map-app-db:
+        condition: service_healthy
+    networks:
+      - shared
+      - default
+
+  live-map-app-db:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "postgres"
+      PSQL_TRUST_LOCALNET: 'true'
+      ENCODING: UTF8
+    image: postgres:9.6
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "postgres", "-U", "postgres"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+networks:
+  shared:
+    external: true
+
+volumes:
+  elixir-artifacts: {}

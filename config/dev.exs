@@ -5,7 +5,7 @@ config :liveMapApp, LiveMapApp.Repo,
   username: "postgres",
   password: "postgres",
   database: "livemapapp_dev",
-  hostname: "localhost",
+  hostname: "livemapapp_live-map-app-db_1",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
