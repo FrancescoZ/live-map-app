@@ -1,7 +1,6 @@
 defmodule LiveMapAppWeb.AppLive.Index do
   use LiveMapAppWeb, :live_view
 
-  alias LiveMapApp.Dashboard.App
   alias LiveMapAppWeb.AppLive.Dashboard
 
   @impl true
@@ -72,6 +71,15 @@ defmodule LiveMapAppWeb.AppLive.Index do
       11 -> "Nov"
       12 -> "Dec"
       _ -> "Unknown"
+    end
+  end
+
+  defp get_day_time(datetime) do
+    cond do
+      datetime.hour < 12 -> "Morning"
+      datetime.hour < 18 -> "Afternoon"
+      datetime.hour < 22 -> "Evening"
+      true -> "Night"
     end
   end
 end

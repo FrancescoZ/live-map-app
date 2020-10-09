@@ -9,22 +9,25 @@
   <div class="dashboard-container">
     <h1>Dashboards</h1>
     <label class="tag">Filters:</label>
-    <input type="radio" id="ByCountry" name="categories" value="ByCountry">
+    <input type="radio" id="ByCountry" phx-update="ignore" name="categories" value="ByCountry">
     <label class="filters" for="ByCountry">Country</label>
-    <input type="radio" id="ByYear" name="categories" value="ByYear">
+    <input type="radio" id="ByDayTime" phx-update="ignore" name="categories" value="ByDayTime">
+    <label class="filters" for="ByDayTime">Daytime</label>
+    <input type="radio" id="ByYear" phx-update="ignore" name="categories" value="ByYear">
     <label class="filters" for="ByYear">Year</label>
-    <input type="radio" id="ByMonth" name="categories" value="ByMonth">
+    <input type="radio" id="ByMonth" phx-update="ignore" name="categories" value="ByMonth">
     <label class="filters" for="ByMonth">Month</label>
-    <input type="radio" id="ByDay" name="categories" value="ByDay">
+    <input type="radio" id="ByDay" phx-update="ignore" name="categories" value="ByDay">
     <label class="filters" for="ByDay">Day</label>
-    <input type="radio" id="ByApp" name="categories" value="ByApp">
+    <input type="radio" id="ByApp" phx-update="ignore" name="categories" value="ByApp">
     <label class="filters" for="ByApp">App</label>
-    <input type="radio" id="List" name="categories" value="List">
+    <input type="radio" id="List" phx-update="ignore" name="categories" value="List">
     <label class="filters" for="List">Table</label>
-    <input type="radio" id="All" name="categories" value="All">
+    <input type="radio" id="All" phx-update="ignore" name="categories" value="All">
     <label class="filters" for="All">All</label>
 
     <%= live_component(@socket, Dashboard, id: "ByCountry", title: "Dashboard by country", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.country, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+    <%= live_component(@socket, Dashboard, id: "ByDayTime", title: "Dashboard by time of the day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_day_time(x.download_at), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
     <%= live_component(@socket, Dashboard, id: "ByYear", title: "Dashboard by Year", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.year, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
     <%= live_component(@socket, Dashboard, id: "ByMonth", title: "Dashboard by Month", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_month_name(x.download_at.month), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
     <%= live_component(@socket, Dashboard, id: "ByDay", title: "Dashboard by Day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_day_name(Date.day_of_week(x.download_at)), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>

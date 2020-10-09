@@ -7,6 +7,8 @@
 .footer {
   grid-row-start: 2;
   grid-row-end: 3;
+  text-align: center;
+  color: grey;
 }
 
 .block{
@@ -150,6 +152,7 @@ input[type="radio"] {
 [value="ByYear"]:checked ~ .dashboard:not([data-category*="ByYear"]),
 [value="ByMonth"]:checked ~ .dashboard:not([data-category*="ByMonth"]),
 [value="ByDay"]:checked ~ .dashboard:not([data-category*="ByDay"]),
+[value="ByDayTime"]:checked ~ .dashboard:not([data-category*="ByDayTime"]),
 [value="ByApp"]:checked ~ .dashboard:not([data-category*="ByApp"]) {
   display: none;
 }
