@@ -1,6 +1,4 @@
 defmodule LiveMapAppWeb.LiveHelpers do
-  import Phoenix.LiveView.Helpers
-
   @doc """
   Renders a component inside the `LiveMapAppWeb.ModalComponent` component.
 
@@ -15,9 +13,6 @@ defmodule LiveMapAppWeb.LiveHelpers do
         app: @app,
         return_to: Routes.app_index_path(@socket, :index) %>
   """
-  def live_modal(socket, component, opts) do
-    path = Keyword.fetch!(opts, :return_to)
-    modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
-    live_component(socket, LiveMapAppWeb.ModalComponent, modal_opts)
+  def live_modal(_socket, _component, _opts) do
   end
 end

@@ -16,8 +16,8 @@
 
 <%= live_component(@socket, Dashboard, id: "ByCountry", title: "Dashboard by country", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.country, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
 <%= live_component(@socket, Dashboard, id: "ByYear", title: "Dashboard by Year", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.year, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
-<%= live_component(@socket, Dashboard, id: "ByMonth", title: "Dashboard by Month", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.month, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
-<%= live_component(@socket, Dashboard, id: "ByDay", title: "Dashboard by Day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, Date.day_of_week(x.download_at), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+<%= live_component(@socket, Dashboard, id: "ByMonth", title: "Dashboard by Month", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_month_name(x.download_at.month), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+<%= live_component(@socket, Dashboard, id: "ByDay", title: "Dashboard by Day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_day_name(Date.day_of_week(x.download_at)), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
 <%= live_component(@socket, Dashboard, id: "ByApp", title: "Dashboard by App", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.app_id, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: false)%>
 
 <table>

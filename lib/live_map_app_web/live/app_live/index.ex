@@ -55,4 +55,35 @@ defmodule LiveMapAppWeb.AppLive.Index do
   defp list_apps do
     LiveMapApp.Dashboard.list_apps()
   end
+
+  defp get_day_name(day) do
+    case day do
+      1 -> "Monday"
+      2 -> "Tuesday"
+      3 -> "Wednesday"
+      4 -> "Thursday"
+      5 -> "Friday"
+      6 -> "Saturday"
+      7 -> "Sunday"
+      _ -> "Unknown"
+    end
+  end
+
+  defp get_month_name(month) do
+    case month do
+      1 -> "Jan"
+      2 -> "Feb"
+      3 -> "Mar"
+      4 -> "Apr"
+      5 -> "May"
+      6 -> "Jun"
+      7 -> "Jul"
+      8 -> "Aug"
+      9 -> "Sep"
+      10 -> "Oct"
+      11 -> "Nov"
+      12 -> "Dec"
+      _ -> "Unknown"
+    end
+  end
 end
