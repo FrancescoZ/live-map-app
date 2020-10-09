@@ -46,7 +46,7 @@
 <span><%= live_patch "New App", to: Routes.app_index_path(@socket, :new) %></span>
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA89Ds58dKjciKWiIDknizzbWkWw0qQVso&callback=initMap&libraries=&v=weekly"
+src="https://maps.googleapis.com/maps/api/js?key=<%= Application.get_env(:liveMapApp, :api_token) %>&callback=initMap&libraries=&v=weekly"
   defer
 ></script>
 

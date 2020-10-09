@@ -17,7 +17,7 @@ defmodule LiveMapAppWeb.DownloadAppController do
            Tesla.get("https://maps.googleapis.com/maps/api/geocode/json",
              query: [
                latlng: "#{latitude},#{longitude}",
-               key: "AIzaSyA89Ds58dKjciKWiIDknizzbWkWw0qQVso"
+               key: Application.get_env(:liveMapApp, :api_token)
              ]
            )
            |> handle_tesla_response() do

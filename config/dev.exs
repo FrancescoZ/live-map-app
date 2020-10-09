@@ -2,10 +2,10 @@ use Mix.Config
 
 # Configure your database
 config :liveMapApp, LiveMapApp.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "livemapapp_dev",
-  hostname: "livemapapp_live-map-app-db_1",
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  database: System.get_env("POSTGRES_DB"),
+  hostname: System.get_env("POSTGRES_HOSTNAME"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

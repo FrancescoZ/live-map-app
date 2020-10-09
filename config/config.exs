@@ -8,12 +8,13 @@
 use Mix.Config
 
 config :liveMapApp,
-  ecto_repos: [LiveMapApp.Repo]
+  ecto_repos: [LiveMapApp.Repo],
+  api_token: System.get_env("API_TOKEN")
 
 # Configures the endpoint
 config :liveMapApp, LiveMapAppWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "AaTdv5ShEI3zjVyztSilpgJOgjwfWsAAJEoMGooHM8fHVbCPGkkuQ13BV1htIuqu",
+  secret_key_base: System.get_env("PHOENIX_SECRET"),
   render_errors: [view: LiveMapAppWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: LiveMapApp.PubSub,
   live_view: [signing_salt: "ifCTTFiF"]
