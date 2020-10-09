@@ -1,11 +1,12 @@
 defmodule LiveMapAppWeb.AppLive.Index do
   use LiveMapAppWeb, :live_view
 
-  alias LiveMapAppWeb.AppLive.Dashboard
+  alias LiveMapAppWeb.AppLive.BarChart
+  alias LiveMapApp.Dashboard
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: LiveMapApp.Dashboard.subscribe()
+    if connected?(socket), do: Dashboard.subscribe()
     {:ok, assign(socket, :downloaded_apps, list_apps())}
   end
 
@@ -20,19 +21,20 @@ defmodule LiveMapAppWeb.AppLive.Index do
     |> assign(:app, nil)
   end
 
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    app = LiveMapApp.Dashboard.get_app!(id)
-    {:ok, _} = LiveMapApp.Dashboard.delete_app(app)
-
-    {:noreply, assign(socket, :apps, list_apps())}
-  end
-
+  @doc """
+  Handle the :download_added event generated from the database
+  It dispatches an update to the app lists to immediately show the result
+  """
   @impl true
   def handle_info({:download_added, app}, socket) do
     {:noreply, update(socket, :downloaded_apps, fn apps -> [app| apps] end)}
   end
 
+  @doc """
+  Handle the :new_marker event generated from the database module everytime a new
+  download is added
+  """
+  @impl true
   def handle_info({:new_marker, app}, socket) do
     {:noreply, push_event(socket, "new_marker", %{
       marker: %{latitude: app.latitude, longitude: app.longitude, app_id: app.app_id}
@@ -40,7 +42,7 @@ defmodule LiveMapAppWeb.AppLive.Index do
   end
 
   defp list_apps do
-    LiveMapApp.Dashboard.list_apps()
+    Dashboard.list_apps()
   end
 
   defp get_day_name(day) do

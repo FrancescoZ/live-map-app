@@ -4,6 +4,22 @@ defmodule LiveMapAppWeb.DownloadAppController do
 
   @unknown "Unknown"
 
+  @doc """
+  Stores a new app object into the database
+
+  it receives:
+  longitude, has to be a float
+  latitude, has to be a float
+  downloaded_at, has to be a date in the iso format
+  app_id
+
+  it validates the attributes time and it save the value in
+  the database
+  Return:
+  created if it was successfull
+  invalid_paramters in case of validation error
+  error in case of storage error
+  """
   def add_download(conn, %{
         "longitude" => long,
         "latitude" => lat,
@@ -14,12 +30,7 @@ defmodule LiveMapAppWeb.DownloadAppController do
          {longitude, ""} <- Float.parse(long),
          {latitude, ""} <- Float.parse(lat),
          country <-
-           Tesla.get("https://maps.googleapis.com/maps/api/geocode/json",
-             query: [
-               latlng: "#{latitude},#{longitude}",
-               key: Application.get_env(:live_map_app, :api_token)
-             ]
-           )
+           Tesla.get("https://maps.googleapis.com/maps/api/geocode/json",query: [latlng: "#{latitude},#{longitude}", key: Application.get_env(:live_map_app, :api_token)])
            |> handle_tesla_response() do
       case Dashboard.create_app(%{
              latitude: lat,
@@ -78,4 +89,8 @@ defmodule LiveMapAppWeb.DownloadAppController do
           acc
         end
       end)
+    |> final_country()
+
+  defp final_country(""), do: @unknown
+  defp final_country(country), do: country
 end
