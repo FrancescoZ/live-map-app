@@ -6,12 +6,12 @@ defmodule LiveMapAppWeb.AppLive.Dashboard do
     title: "Dashboard",
     list: [],
     total: 0,
-    percentage: false
+    percentage: false,
   }
 
   def render(assigns) do
     ~L"""
-    <dl>
+    <dl class="dashboard" data-category="<%= @id %>">
       <dt><%= @title %></dt>
       <%= for {countryName, count} <- @list do %>
         <dd class="percentage percentage-<%= trunc((count/@total)*100) %>">

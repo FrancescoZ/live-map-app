@@ -23,7 +23,7 @@ defmodule LiveMapAppWeb.AppLiveTest do
     test "contains dashboards", %{conn: conn, app: _app} do
       {:ok, _index_live, html} = live(conn, Routes.app_index_path(conn, :index))
 
-      assert html =~ "Downladed App"
+      assert html =~ "Downloads Map"
       assert html =~ "Dashboard by Day"
       assert html =~ "Dashboard by Year"
       assert html =~ "Dashboard by Month"
@@ -34,14 +34,14 @@ defmodule LiveMapAppWeb.AppLiveTest do
     test "lists all apps", %{conn: conn, app: app} do
       {:ok, _index_live, html} = live(conn, Routes.app_index_path(conn, :index))
 
-      assert html =~ "Downladed App"
+      assert html =~ "Downloads Map"
       assert html =~ app.app_id
     end
 
     test "contains marker", %{conn: conn, app: _app} do
       {:ok, _index_live, html} = live(conn, Routes.app_index_path(conn, :index))
 
-      assert html =~ "Downladed App"
+      assert html =~ "Downloads Map"
       assert html =~ "position: { lat: 120.5, lng: 120.5 }"
     end
   end

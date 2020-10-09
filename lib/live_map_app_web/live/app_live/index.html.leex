@@ -1,49 +1,64 @@
-<h1>Downladed App</h1>
-
-<%= if @live_action in [:new, :edit] do %>
-  <%= live_modal @socket, LiveMapAppWeb.AppLive.FormComponent,
-    id: @app.id || :new,
-    title: @page_title,
-    action: @live_action,
-    app: @app,
-    return_to: Routes.app_index_path(@socket, :index) %>
-<% end %>
-
+<section class="block row">
+<h2 class="column-name">Downloads Map</h2>
 <section id="google-map_container" class="row" phx-update="ignore" phx-hook="MapMarkerHandler">
   <div id="map" class="column">
   </div>
 </section>
+</section>
+<section class="row block">
+  <div class="dashboard-container">
+    <h1>Dashboards</h1>
+    <label class="tag">Filters:</label>
+    <input type="radio" id="ByCountry" name="categories" value="ByCountry">
+    <label class="filters" for="ByCountry">Country</label>
+    <input type="radio" id="ByYear" name="categories" value="ByYear">
+    <label class="filters" for="ByYear">Year</label>
+    <input type="radio" id="ByMonth" name="categories" value="ByMonth">
+    <label class="filters" for="ByMonth">Month</label>
+    <input type="radio" id="ByDay" name="categories" value="ByDay">
+    <label class="filters" for="ByDay">Day</label>
+    <input type="radio" id="ByApp" name="categories" value="ByApp">
+    <label class="filters" for="ByApp">App</label>
+    <input type="radio" id="List" name="categories" value="List">
+    <label class="filters" for="List">Table</label>
+    <input type="radio" id="All" name="categories" value="All">
+    <label class="filters" for="All">All</label>
 
-<%= live_component(@socket, Dashboard, id: "ByCountry", title: "Dashboard by country", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.country, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
-<%= live_component(@socket, Dashboard, id: "ByYear", title: "Dashboard by Year", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.year, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
-<%= live_component(@socket, Dashboard, id: "ByMonth", title: "Dashboard by Month", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_month_name(x.download_at.month), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
-<%= live_component(@socket, Dashboard, id: "ByDay", title: "Dashboard by Day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_day_name(Date.day_of_week(x.download_at)), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
-<%= live_component(@socket, Dashboard, id: "ByApp", title: "Dashboard by App", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.app_id, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: false)%>
+    <%= live_component(@socket, Dashboard, id: "ByCountry", title: "Dashboard by country", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.country, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+    <%= live_component(@socket, Dashboard, id: "ByYear", title: "Dashboard by Year", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.download_at.year, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+    <%= live_component(@socket, Dashboard, id: "ByMonth", title: "Dashboard by Month", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_month_name(x.download_at.month), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+    <%= live_component(@socket, Dashboard, id: "ByDay", title: "Dashboard by Day", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, get_day_name(Date.day_of_week(x.download_at)), 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: true)%>
+    <%= live_component(@socket, Dashboard, id: "ByApp", title: "Dashboard by App", list: Enum.reduce(@downloaded_apps, %{}, fn x, acc -> Map.update(acc, x.app_id, 1, &(&1 + 1)) end), total: length(@downloaded_apps), percentage: false)%>
+    <div class="dashboard" data-category="List">
+    <table>
+      <thead>
+        <tr>
+           <th>App</th>
+           <th>Download at</th>
+           <th>Country</th>
+          <th>Longitude</th>
+          <th>Latitude</th>
 
-<table>
-  <thead>
-    <tr>
-      <th>Longitude</th>
-      <th>Latitude</th>
-      <th>App</th>
-      <th>Download at</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="downloaded_apps">
-    <%= for app <- @downloaded_apps do %>
-      <tr id="app-<%= app.id %>">
-        <td><%= app.longitude %></td>
-        <td><%= app.latitude %></td>
-        <td><%= app.app_id %></td>
-        <td><%= app.download_at %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<span><%= live_patch "New App", to: Routes.app_index_path(@socket, :new) %></span>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="downloaded_apps">
+        <%= for app <- @downloaded_apps do %>
+          <tr id="app-<%= app.id %>">
+            <td><%= app.app_id %></td>
+            <td><%= app.download_at %></td>
+            <td><%= app.country %></td>
+            <td><%= app.longitude %></td>
+            <td><%= app.latitude %></td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
 
 <script
 src="https://maps.googleapis.com/maps/api/js?key=<%= Application.get_env(:live_map_app, :api_token) %>&callback=initMap&libraries=&v=weekly"

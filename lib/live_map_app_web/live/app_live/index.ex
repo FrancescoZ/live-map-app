@@ -15,21 +15,9 @@ defmodule LiveMapAppWeb.AppLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit App")
-    |> assign(:app, LiveMapApp.Dashboard.get_app!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New App")
-    |> assign(:app, %App{})
-  end
-
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Apps")
+    |> assign(:page_title, "Dashboards")
     |> assign(:app, nil)
   end
 
