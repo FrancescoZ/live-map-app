@@ -6,7 +6,7 @@ defmodule LiveMapAppWeb.AppLive.BarChart do
     title: "Dashboard",
     list: [],
     total: 0,
-    percentage: false,
+    percentage: false
   }
 
   @doc """

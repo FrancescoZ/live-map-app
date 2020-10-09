@@ -5,7 +5,12 @@ defmodule LiveMapAppWeb.AppLiveTest do
 
   alias LiveMapApp.Dashboard
 
-  @create_attrs %{app_id: "some app_id", download_at: "2010-04-17T14:00:00Z", latitude: "120.5", longitude: "120.5"}
+  @create_attrs %{
+    app_id: "some app_id",
+    download_at: "2010-04-17T14:00:00Z",
+    latitude: "120.5",
+    longitude: "120.5"
+  }
 
   defp fixture(:app) do
     {:ok, app} = Dashboard.create_app(@create_attrs)

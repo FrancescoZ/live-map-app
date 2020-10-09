@@ -27,7 +27,7 @@ defmodule LiveMapAppWeb.AppLive.Index do
   """
   @impl true
   def handle_info({:download_added, app}, socket) do
-    {:noreply, update(socket, :downloaded_apps, fn apps -> [app| apps] end)}
+    {:noreply, update(socket, :downloaded_apps, fn apps -> [app | apps] end)}
   end
 
   @doc """
@@ -36,9 +36,10 @@ defmodule LiveMapAppWeb.AppLive.Index do
   """
   @impl true
   def handle_info({:new_marker, app}, socket) do
-    {:noreply, push_event(socket, "new_marker", %{
-      marker: %{latitude: app.latitude, longitude: app.longitude, app_id: app.app_id}
-    })}
+    {:noreply,
+     push_event(socket, "new_marker", %{
+       marker: %{latitude: app.latitude, longitude: app.longitude, app_id: app.app_id}
+     })}
   end
 
   defp list_apps do

@@ -30,7 +30,12 @@ defmodule LiveMapAppWeb.DownloadAppController do
          {longitude, ""} <- Float.parse(long),
          {latitude, ""} <- Float.parse(lat),
          country <-
-           Tesla.get("https://maps.googleapis.com/maps/api/geocode/json",query: [latlng: "#{latitude},#{longitude}", key: Application.get_env(:live_map_app, :api_token)])
+           Tesla.get("https://maps.googleapis.com/maps/api/geocode/json",
+             query: [
+               latlng: "#{latitude},#{longitude}",
+               key: Application.get_env(:live_map_app, :api_token)
+             ]
+           )
            |> handle_tesla_response() do
       case Dashboard.create_app(%{
              latitude: lat,
@@ -71,13 +76,18 @@ defmodule LiveMapAppWeb.DownloadAppController do
 
   defp handle_tesla_response(_response), do: @unknown
 
-  defp parse_results({:ok, %{"results"=> nil}}), do: @unknown
-  defp parse_results({:ok, %{"results"=> result}}), do: result
+  defp parse_results({:ok, %{"results" => nil}}), do: @unknown
+
+  defp parse_results({:ok, %{"results" => result}}),
+    do:
+      result
       |> List.first()
       |> parse_address()
+
   defp parse_results(_), do: @unknown
 
   defp parse_address(nil), do: @unknown
+
   defp parse_address(components),
     do:
       components
@@ -89,7 +99,7 @@ defmodule LiveMapAppWeb.DownloadAppController do
           acc
         end
       end)
-    |> final_country()
+      |> final_country()
 
   defp final_country(""), do: @unknown
   defp final_country(country), do: country

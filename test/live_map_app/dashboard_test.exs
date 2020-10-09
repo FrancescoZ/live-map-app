@@ -6,7 +6,13 @@ defmodule LiveMapApp.DashboardTest do
   describe "apps" do
     alias LiveMapApp.Dashboard.App
 
-    @valid_attrs %{app_id: "some app_id", download_at: "2010-04-17T14:00:00Z", latitude: "120.5", longitude: "120.5", country: "Unknown"}
+    @valid_attrs %{
+      app_id: "some app_id",
+      download_at: "2010-04-17T14:00:00Z",
+      latitude: "120.5",
+      longitude: "120.5",
+      country: "Unknown"
+    }
     @invalid_attrs %{app_id: nil, download_at: nil, latitude: nil, longitude: nil}
 
     def app_fixture(attrs \\ %{}) do

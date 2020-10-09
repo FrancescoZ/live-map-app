@@ -2,11 +2,10 @@
 
 set -ex
 
-cd assets
-npm install
-cd ..
-
 mix deps.get
+
+npm install --prefix assets
+
 mix compile
 mix do ecto.create, ecto.migrate
 

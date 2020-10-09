@@ -7,8 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile.local
       args:
-        hex_repo_key: ${HEX_REPO_KEY}
-        uid: ${UID}
+        uid: 501
     # Comment the following line if you want `docker-compose up` to start the phoenix server automatically
     command: bash scripts/dev.sh
     env_file: ./env/dev.env
