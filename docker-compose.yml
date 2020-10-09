@@ -1,6 +1,6 @@
 version: '2.2'
 services:
-  live-map-app:
+  service:
     environment:
       - UID
     build:
@@ -18,13 +18,13 @@ services:
       - .:/home/app/service/
       - elixir-artifacts:/home/app/elixir-artifacts
     depends_on:
-      live-map-app-db:
+      db:
         condition: service_healthy
     networks:
       - shared
       - default
 
-  live-map-app-db:
+  db:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "postgres"

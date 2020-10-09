@@ -31,11 +31,11 @@ defmodule LiveMapAppWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("liveMapApp.repo.query.total_time", unit: {:native, :millisecond}),
-      summary("liveMapApp.repo.query.decode_time", unit: {:native, :millisecond}),
-      summary("liveMapApp.repo.query.query_time", unit: {:native, :millisecond}),
-      summary("liveMapApp.repo.query.queue_time", unit: {:native, :millisecond}),
-      summary("liveMapApp.repo.query.idle_time", unit: {:native, :millisecond}),
+      summary("live_map_app.repo.query.total_time", unit: {:native, :millisecond}),
+      summary("live_map_app.repo.query.decode_time", unit: {:native, :millisecond}),
+      summary("live_map_app.repo.query.query_time", unit: {:native, :millisecond}),
+      summary("live_map_app.repo.query.queue_time", unit: {:native, :millisecond}),
+      summary("live_map_app.repo.query.idle_time", unit: {:native, :millisecond}),
 
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),

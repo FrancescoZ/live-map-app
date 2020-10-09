@@ -30,7 +30,7 @@ defmodule LiveMapAppWeb do
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/liveMapApp_web/templates",
+        root: "lib/live_map_app_web/templates",
         namespace: LiveMapAppWeb
 
       # Import convenience functions from controllers

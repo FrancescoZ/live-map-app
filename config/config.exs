@@ -7,12 +7,12 @@
 # General application configuration
 use Mix.Config
 
-config :liveMapApp,
+config :live_map_app,
   ecto_repos: [LiveMapApp.Repo],
   api_token: System.get_env("API_TOKEN")
 
 # Configures the endpoint
-config :liveMapApp, LiveMapAppWeb.Endpoint,
+config :live_map_app, LiveMapAppWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: System.get_env("PHOENIX_SECRET"),
   render_errors: [view: LiveMapAppWeb.ErrorView, accepts: ~w(html json), layout: false],
