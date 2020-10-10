@@ -2,7 +2,7 @@
 
 This is a really simple [Phoenix LiveView]() Application to get real time information about app downloads using a map and different dashboards.
 
-The creation of this project is described in [this article]()
+The creation of this project is described in [this article](https://medium.com/@francescozanoli/how-to-use-google-maps-with-ecto-and-phoenix-liveview-2b81bed570a9)
 
 ## Development
 ### Requirements
@@ -18,7 +18,9 @@ Once you have it you have to copy it in the `API_TOKEN` environment variable in 
 
 ### How to launch it
 Once you have clone the repo you just need to go into the folder and run:
-> docker-compose up
+> docker-compose up --build
+
+Note: the first time it may take a while
 
 As default the container is created, dependencies are installed, database is created and migrated but no application is started. This allow you to jump into the container and run test if you want to.
 To jump into the container you can copy the output of the `docker-compose up` into another console or run this:
@@ -33,6 +35,13 @@ The server will start listening on the port `4000`, which is forwared from the c
 ### How to run tests
 Inside the container you can run unit test using:
 > MIX_ENV=test mix test
+
+### Troubleshooting
+If the process doesn't work try deleting all the following images from docker if presents:
+- live-map-app_service
+- postgres
+- elixir
+Try deleting also the folder _build, deps and node_module then start the process again
 
 ## Usage
 To start using the service you need to start it using the instruction above.
